@@ -9,8 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhD3Zg/AnUSQF8Gr2ThBBqyYUs=" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <header class="hero" id="top">
@@ -20,10 +19,10 @@
     </nav>
     <div class="hero-content shell">
       <div class="hero-copy">
-        <p class="eyebrow">A self-guided Saturday tour · 2 PM · Aug-Dec 2026</p>
+        <p class="eyebrow">Today · Saturday, August 29, 2026 · 2 PM start</p>
         <h1>Milwaukee<br><em>Cheese Curd</em><br>Tour 2026</h1>
         <p class="tagline">Six stops. Six styles. One gloriously cheesy Milwaukee walk.</p>
-        <a class="button" href="#planner">Pick your Saturday <span>↓</span></a>
+        <a class="button" href="#route">Today’s route <span>↓</span></a>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="sun"></div><div class="curd c1"></div><div class="curd c2"></div><div class="curd c3"></div>
@@ -35,18 +34,6 @@
   </header>
 
   <main>
-    <section class="planner section shell" id="planner">
-      <div class="section-heading">
-        <div><p class="eyebrow dark">Choose the day</p><h2>Make it official.</h2></div>
-        <p>Upcoming Saturdays through December start at 2 PM and are loaded and ready. Your selection stays saved on this device.</p>
-      </div>
-      <div class="date-panel">
-        <label for="tour-date">Your tour Saturday</label>
-        <select id="tour-date" aria-describedby="date-status"><option value="">Choose a date...</option></select>
-        <p id="date-status" class="date-status">No date selected yet.</p>
-      </div>
-    </section>
-
     <section class="route-section section" id="route">
       <div class="shell">
         <div class="section-heading light">
@@ -56,10 +43,7 @@
         <div class="route-stats" aria-label="Route summary">
           <div><strong>6</strong><span>stops</span></div><div><strong>3.2 mi</strong><span>full route on foot</span></div><div><strong>~75 min</strong><span>walking, food stops excluded</span></div>
         </div>
-        <div class="map-wrap">
-          <div id="map" role="application" aria-label="Interactive map of six cheese curd tour stops"></div><div class="map-fallback"><strong>Map not loading?</strong><a id="fallback-route" href="https://www.google.com/maps/dir/?api=1&origin=1007+N+Doctor+M.L.K.+Jr+Dr%2C+Milwaukee%2C+WI&destination=216+S+2nd+St%2C+Milwaukee%2C+WI&waypoints=509+W+Wisconsin+Ave%2C+Milwaukee%2C+WI%7C1128+N+9th+St%2C+Milwaukee%2C+WI%7C345+N+Broadway%2C+Milwaukee%2C+WI%7C346+N+Broadway%2C+Milwaukee%2C+WI&travelmode=walking" target="_blank">Open the full route in Google Maps →</a></div>
-          <div class="map-key"><span><i class="dot walk"></i>Walk cluster</span><span><i class="line-hop"></i>Longer hop</span></div>
-        </div>
+        <figure class="static-map-wrap"><img src="static-route-map.jpg?v=7" alt="Street map of the six-stop Milwaukee cheese curd route, numbered in tour order" width="1200" height="850"><figcaption>Complete route · numbers match the stops below · <a href="#stops">Jump to tap-to-navigate links ↓</a></figcaption></figure>
         <div class="pace-warning"><strong>Important pacing:</strong> The kitchens at Wicked Hop and Black Sheep pause from 3-4 PM. Do not rush: a faster pace can put you at a closed kitchen. Café Benelux serves continuously and is the place to absorb the 3-4 window. The long leg is Pilot Project to Wicked Hop: 1.4 miles, about 32 minutes.</div>
         <a class="button yellow" id="maps-link" target="_blank" rel="noopener">Start walking: open leg 1 in Google Maps ↗</a>
       </div>
@@ -100,7 +84,6 @@
 
   <footer><div class="shell footer-grid"><div><p class="brand"><span>MC</span> Curd Tour</p><p>Made for a gloriously cheesy Milwaukee Saturday.</p></div><div><h3>Verify before you go</h3><p>Menus and hours can change. Current details were checked for Saturday service.</p></div><div><h3>Sources</h3><p><a href="https://whosonthirdmke.com/menu">Who's</a> · <a href="https://milwaukee.millertimepubandgrill.com/menu">Miller Time</a> · <a href="https://www.pilotprojectbrewing.com/milwaukeefood">Pilot Project</a> · <a href="https://www.thewickedhop.com/">Wicked Hop</a> · <a href="https://cafebenelux.com/menus">Benelux</a> · <a href="https://www.blacksheepmke.com/weekend-brunch/">Black Sheep</a></p></div></div></footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
