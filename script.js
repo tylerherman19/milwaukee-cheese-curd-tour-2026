@@ -43,3 +43,75 @@ nameInput.addEventListener('input',()=>{localStorage.setItem('curd-rater-name',n
 scoreRoot.addEventListener('click',e=>{if(e.target.closest('.rating-buttons button'))queueSync()});scoreRoot.addEventListener('input',e=>{if(e.target.tagName==='TEXTAREA')queueSync()});window.addEventListener('online',syncShared);
 async function loadGroup(){try{const r=await fetch(`${API}?tour_id=eq.milwaukee-2026&select=participant_id,participant_name,scores,updated_at`,{headers:{apikey:APIKEY}});if(!r.ok)throw Error(r.status);const people=await r.json(),byStop=stops.map((s,i)=>{const rows=people.map(p=>({p,d:p.scores?.[i]})).filter(x=>values(x.d||{}).length);const q={};metrics.forEach(m=>{const vs=rows.map(x=>Number(x.d[m.toLowerCase()]||0)).filter(Boolean);q[m]=vs.length?vs.reduce((a,b)=>a+b,0)/vs.length:0});const vals=Object.values(q).filter(Boolean);return{name:s.name,raters:rows.length,avg:vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0,q}}).filter(x=>x.raters).sort((a,b)=>b.avg-a.avg);document.querySelector('#group-heading').textContent=byStop.length?`${byStop[0].name} leads at ${byStop[0].avg.toFixed(1)} / 5.`:'No group scores yet.';document.querySelector('#group-count').textContent=`${people.length} ${people.length===1?'rater':'raters'} synced · averages show rater count per stop`;document.querySelector('#group-ranking').innerHTML=byStop.map((x,i)=>`<li><span><b>${i+1}</b> ${x.name}<small> · ${x.raters} ${x.raters===1?'rater':'raters'} · C ${x.q.Crunch.toFixed(1)} / P ${x.q.Pull.toFixed(1)} / Se ${x.q.Seasoning.toFixed(1)} / Sa ${x.q.Sauce.toFixed(1)} / Sc ${x.q.Score.toFixed(1)}</small></span><strong>${x.avg.toFixed(1)}</strong></li>`).join('')}catch(e){document.querySelector('#group-heading').textContent='Group results unavailable offline';document.querySelector('#group-count').textContent='Your scores still save on this device.'}}
 loadGroup();if(nameInput.value)syncShared();
+
+// Interactive route map
+function initMap(){
+  const mapEl=document.querySelector('#map');if(!mapEl||typeof L==='undefined')return;
+  const map=L.map(mapEl,{scrollWheelZoom:false,fadeAnimation:false,zoomAnimation:false,markerZoomAnimation:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  const bounds=[];
+  stops.forEach((s,i)=>{
+    const icon=L.divIcon({className:'number-marker',html:`<span>${i+1}</span>`,iconSize:[32,32],iconAnchor:[16,16]});
+    L.marker([s.lat,s.lng],{icon}).addTo(map).bindPopup(`<h3>${s.name}</h3><p>${s.style}</p>`);
+    bounds.push([s.lat,s.lng]);
+  });
+  mapEl.addEventListener('mouseenter',()=>map.scrollWheelZoom.enable());
+  mapEl.addEventListener('mouseleave',()=>map.scrollWheelZoom.disable());
+  const legsReady=fetch('routes.json').then(r=>r.json()).catch(()=>[]);
+  const fontsReady=document.fonts?document.fonts.ready:Promise.resolve();
+  Promise.all([legsReady,fontsReady]).then(([legs])=>{
+    legs.forEach(leg=>{L.polyline(leg.coords,{color:'#df5b2a',weight:4,opacity:.85}).addTo(map);leg.coords.forEach(c=>bounds.push(c))});
+    map.fitBounds(bounds,{padding:[30,30]});
+  });
+}
+initMap();
+
+// Admin panel
+const ADMIN_PW='CHEESE';
+const adminModal=document.querySelector('#admin-modal'),adminOpen=document.querySelector('#admin-open'),adminClose=document.querySelector('#admin-close'),adminLoginEl=document.querySelector('#admin-login'),adminBody=document.querySelector('#admin-panel-body'),adminPwInput=document.querySelector('#admin-password'),adminError=document.querySelector('#admin-error'),adminTable=document.querySelector('#admin-table');
+adminOpen.addEventListener('click',()=>{adminModal.hidden=false;adminPwInput.value='';adminError.textContent='';adminLoginEl.hidden=false;adminBody.hidden=true;adminPwInput.focus()});
+adminClose.addEventListener('click',()=>adminModal.hidden=true);
+adminModal.addEventListener('click',e=>{if(e.target===adminModal)adminModal.hidden=true});
+function adminLogin(){if(adminPwInput.value===ADMIN_PW){adminLoginEl.hidden=true;adminBody.hidden=false;loadAdminTable()}else{adminError.textContent='Wrong password'}}
+document.querySelector('#admin-submit').addEventListener('click',adminLogin);
+adminPwInput.addEventListener('keydown',e=>{if(e.key==='Enter')adminLogin()});
+async function loadAdminTable(){
+  adminTable.textContent='Loading…';
+  try{
+    const r=await fetch(`${API}?tour_id=eq.milwaukee-2026&select=participant_id,participant_name,scores`,{headers:{apikey:APIKEY}});
+    if(!r.ok)throw Error(r.status);
+    const people=await r.json();
+    if(!people.length){adminTable.innerHTML='<p>No group scores yet.</p>';return}
+    adminTable.innerHTML=`<table class="admin-grid"><thead><tr><th>Rater</th>${stops.map((s,i)=>`<th>${s.name}<button type="button" class="admin-col-clear" data-stop="${i}">Clear all</button></th>`).join('')}<th></th></tr></thead><tbody>${people.map(p=>`<tr><td>${p.participant_name||'(unnamed)'}</td>${stops.map((s,i)=>{const avg=average(p.scores?.[i]||{});return `<td>${avg?`${avg.toFixed(1)} <button type="button" class="admin-cell-clear" data-stop="${i}" data-pid="${p.participant_id}" aria-label="Clear ${p.participant_name}'s ${s.name} score">×</button>`:'—'}</td>`}).join('')}<td><button type="button" class="admin-row-remove" data-pid="${p.participant_id}">Remove rater</button></td></tr>`).join('')}</tbody></table>`;
+  }catch(e){adminTable.innerHTML='<p>Could not load group data.</p>'}
+}
+document.querySelector('#admin-wipe-all').addEventListener('click',async()=>{
+  if(!confirm('Delete ALL group scores? This cannot be undone.'))return;
+  await fetch(`${API}?tour_id=eq.milwaukee-2026`,{method:'DELETE',headers:{apikey:APIKEY}});
+  loadAdminTable();loadGroup();
+});
+adminTable.addEventListener('click',async e=>{
+  const colBtn=e.target.closest('.admin-col-clear'),cellBtn=e.target.closest('.admin-cell-clear'),rowBtn=e.target.closest('.admin-row-remove');
+  if(colBtn){
+    const stopI=colBtn.dataset.stop;
+    if(!confirm(`Clear everyone's scores for ${stops[stopI].name}?`))return;
+    const r=await fetch(`${API}?tour_id=eq.milwaukee-2026&select=participant_id,scores`,{headers:{apikey:APIKEY}});
+    const people=await r.json();
+    await Promise.all(people.filter(p=>p.scores&&p.scores[stopI]).map(p=>{const s={...p.scores};delete s[stopI];return fetch(`${API}?tour_id=eq.milwaukee-2026&participant_id=eq.${p.participant_id}`,{method:'PATCH',headers:{apikey:APIKEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({scores:s})})}));
+    loadAdminTable();loadGroup();
+  }
+  if(cellBtn){
+    const stopI=cellBtn.dataset.stop,pid=cellBtn.dataset.pid;
+    const r=await fetch(`${API}?tour_id=eq.milwaukee-2026&participant_id=eq.${pid}&select=scores`,{headers:{apikey:APIKEY}});
+    const rows=await r.json();if(!rows.length)return;
+    const s={...rows[0].scores};delete s[stopI];
+    await fetch(`${API}?tour_id=eq.milwaukee-2026&participant_id=eq.${pid}`,{method:'PATCH',headers:{apikey:APIKEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({scores:s})});
+    loadAdminTable();loadGroup();
+  }
+  if(rowBtn){
+    const pid=rowBtn.dataset.pid;
+    if(!confirm('Remove this rater entirely?'))return;
+    await fetch(`${API}?tour_id=eq.milwaukee-2026&participant_id=eq.${pid}`,{method:'DELETE',headers:{apikey:APIKEY}});
+    loadAdminTable();loadGroup();
+  }
+});
