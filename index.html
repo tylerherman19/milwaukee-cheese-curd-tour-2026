@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1f160d">
+  <meta name="description" content="A self-guided six-stop Milwaukee cheese curd tour for Saturdays, August through December 2026.">
+  <title>Milwaukee Cheese Curd Tour 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhD3Zg/AnUSQF8Gr2ThBBqyYUs=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero" id="top">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Milwaukee Cheese Curd Tour home"><span>MC</span> Curd Tour</a>
+      <div class="nav-links"><a href="#route">Route</a><a href="#scorecard">Scorecard</a><a href="#glossary">Curd school</a></div>
+    </nav>
+    <div class="hero-content shell">
+      <div class="hero-copy">
+        <p class="eyebrow">A self-guided Saturday tour · Aug-Dec 2026</p>
+        <h1>Milwaukee<br><em>Cheese Curd</em><br>Tour 2026</h1>
+        <p class="tagline">Six stops. Six styles. One gloriously cheesy Milwaukee walk.</p>
+        <a class="button" href="#planner">Pick your Saturday <span>↓</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun"></div><div class="curd c1"></div><div class="curd c2"></div><div class="curd c3"></div>
+        <div class="route-doodle">1 · · · 2 · · · 3<br><span>· · · · · · · ·</span><br>4 · 5 · · · · 6</div>
+        <p>Walk. Taste. Score.<br>Crown a champion.</p>
+      </div>
+    </div>
+    <div class="ticker"><div>FRESH & SQUEAKY ✦ BEER-BATTERED ✦ PANCAKE-BATTERED ✦ TAVERN CLASSIC ✦ RIVERFRONT FINALE ✦ FRESH & SQUEAKY ✦ BEER-BATTERED ✦</div></div>
+  </header>
+
+  <main>
+    <section class="planner section shell" id="planner">
+      <div class="section-heading">
+        <div><p class="eyebrow dark">Choose the day</p><h2>Make it official.</h2></div>
+        <p>All 22 Saturdays from August through December are loaded and ready. Your selection stays saved on this device.</p>
+      </div>
+      <div class="date-panel">
+        <label for="tour-date">Your tour Saturday</label>
+        <select id="tour-date" aria-describedby="date-status"><option value="">Choose a date...</option></select>
+        <p id="date-status" class="date-status">No date selected yet.</p>
+      </div>
+    </section>
+
+    <section class="route-section section" id="route">
+      <div class="shell">
+        <div class="section-heading light">
+          <div><p class="eyebrow">The route</p><h2>Three neighborhoods.<br>Two smart hops.</h2></div>
+          <p>This is a city-wide tasting route, not one continuous short walk. Walk within each cluster, then use rideshare, bus, bike, or a determined stride between them.</p>
+        </div>
+        <div class="route-stats" aria-label="Route summary">
+          <div><strong>6</strong><span>stops</span></div><div><strong>4.2 mi</strong><span>full route on foot</span></div><div><strong>~71 min</strong><span>walking, food stops excluded</span></div>
+        </div>
+        <div class="map-wrap">
+          <div id="map" role="application" aria-label="Interactive map of six cheese curd tour stops"></div>
+          <div class="map-key"><span><i class="dot walk"></i>Walk cluster</span><span><i class="line-hop"></i>Longer hop</span></div>
+        </div>
+        <div class="cluster-grid">
+          <article><span class="cluster-number">A</span><p class="kicker">Third Ward → Walker's Point</p><h3>Stops 1-3</h3><p>About 0.9 miles of walking total. The perfect opening flight: fresh, fried, then wildly sweet-savory.</p></article>
+          <article class="hop"><span>→</span><p><strong>1.1-mile transfer</strong><br>Walk ~25 min or take a quick ride.</p></article>
+          <article><span class="cluster-number">B</span><p class="kicker">Westown</p><h3>Stops 4-5</h3><p>Just 43 feet apart. These neighboring tavern stops make the easiest back-to-back comparison.</p></article>
+          <article class="hop"><span>→</span><p><strong>1.1-mile transfer</strong><br>Walk ~25 min or ride to the river.</p></article>
+          <article><span class="cluster-number">C</span><p class="kicker">Riverwest</p><h3>Stop 6</h3><p>Finish at Lakefront Brewery on the Milwaukee River with its famous beer-battered curds.</p></article>
+        </div>
+        <a class="button yellow" id="maps-link" target="_blank" rel="noopener">Open the full route in Google Maps ↗</a>
+      </div>
+    </section>
+
+    <section class="stops section shell" id="stops">
+      <div class="section-heading"><div><p class="eyebrow dark">Six stops, six styles</p><h2>The tasting lineup.</h2></div><p>Go in order for the sharpest contrast. Tap an address for the venue map.</p></div>
+      <div class="stop-list" id="stop-list"></div>
+    </section>
+
+    <section class="score-section section" id="scorecard">
+      <div class="shell">
+        <div class="section-heading light"><div><p class="eyebrow">Tour day tool</p><h2>Your tasting scorecard.</h2></div><p>Rate each stop from 1 to 10. Notes, scores, and your chosen date save automatically in this browser, even after a refresh.</p></div>
+        <div class="score-actions"><p id="save-state">Saved locally ✓</p><button class="text-button" id="reset-scores" type="button">Reset scorecard</button></div>
+        <div id="scorecards" class="scorecards"></div>
+        <div class="leaderboard" id="leaderboard"><p class="eyebrow">Current leader</p><h3>Start scoring to crown a curd.</h3></div>
+      </div>
+    </section>
+
+    <section class="curd-school section shell" id="glossary">
+      <div class="section-heading"><div><p class="eyebrow dark">Curd school</p><h2>Know what you're tasting.</h2></div><p>A quick comparison guide and a little Wisconsin curd lore for the road.</p></div>
+      <div class="compare-table" role="region" aria-label="Cheese curd style comparison" tabindex="0">
+        <table><thead><tr><th>Style</th><th>Coating</th><th>Texture</th><th>Best clue</th></tr></thead><tbody>
+          <tr><td>Fresh</td><td>None</td><td>Cool, springy, squeaky</td><td>The benchmark for cheese itself</td></tr>
+          <tr><td>Beer-battered</td><td>Light batter + beer</td><td>Crisp shell, soft center</td><td>Malty, airy crust</td></tr>
+          <tr><td>Pancake-battered</td><td>Sweet breakfast batter</td><td>Fluffy outside, molten inside</td><td>Maple-ready sweet-savory edge</td></tr>
+          <tr><td>Tavern classic</td><td>Seasoned or beer batter</td><td>Hearty crunch, big pull</td><td>Built for ranch and a cold drink</td></tr>
+        </tbody></table>
+      </div>
+      <div class="facts">
+        <details open><summary>Why do fresh curds squeak?</summary><p>Young curds have a springy protein network. It rubs against your teeth as you bite, making the famous squeak. As the curd ages and absorbs moisture, that structure softens and the squeak fades.</p></details>
+        <details><summary>Curd vs. cheese: what's the difference?</summary><p>Curds are the fresh solids formed when milk is cultured and coagulated. Press, salt, and age those curds and they become the cheese wheels and blocks you know.</p></details>
+        <details><summary>What makes a useful score?</summary><p>Judge the shell and the cheese separately. Crunch tracks the coating; pull tracks the warm cheese stretch. Seasoning and sauce should support the curd, not hide it.</p></details>
+        <details><summary>How should we pace six stops?</summary><p>Share one order at each stop, hydrate, and leave room for the finale. The two longer transfers after stops 3 and 5 are natural reset points.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="shell footer-grid"><div><p class="brand"><span>MC</span> Curd Tour</p><p>Made for a gloriously cheesy Milwaukee Saturday.</p></div><div><h3>Verify before you go</h3><p>Menus, hours, and specials can change. Check each venue's linked site on tour day.</p></div><div><h3>Sources</h3><p><a href="https://milwaukeepublicmarket.org/vendors/west-allis-cheese-sausage-shoppe">Public Market</a> · <a href="https://mke.caminomke.com/milwaukee-walkers-point-camino-food-menu">Camino</a> · <a href="https://www.blacksheepmke.com/weekend-brunch/">Black Sheep</a> · <a href="https://whosonthirdmke.com/menu">Who's on Third</a> · <a href="https://www.milwaukeebrathouse.com/milwaukee-brat-house-downtown">Brat House</a> · <a href="https://lakefrontbrewery.com/beer-hall/curd-of-the-month">Lakefront</a></p></div></div></footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="script.js"></script>
+</body>
+</html>
