@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhD3Zg/AnUSQF8Gr2ThBBqyYUs=" crossorigin="">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
   <header class="hero" id="top">
@@ -20,7 +20,7 @@
     </nav>
     <div class="hero-content shell">
       <div class="hero-copy">
-        <p class="eyebrow">A self-guided Saturday tour · Aug-Dec 2026</p>
+        <p class="eyebrow">A self-guided Saturday tour · 2 PM · Aug-Dec 2026</p>
         <h1>Milwaukee<br><em>Cheese Curd</em><br>Tour 2026</h1>
         <p class="tagline">Six stops. Six styles. One gloriously cheesy Milwaukee walk.</p>
         <a class="button" href="#planner">Pick your Saturday <span>↓</span></a>
@@ -38,7 +38,7 @@
     <section class="planner section shell" id="planner">
       <div class="section-heading">
         <div><p class="eyebrow dark">Choose the day</p><h2>Make it official.</h2></div>
-        <p>All 22 Saturdays from August through December are loaded and ready. Your selection stays saved on this device.</p>
+        <p>All 22 Saturdays from August through December start at 2 PM and are loaded and ready. Your selection stays saved on this device.</p>
       </div>
       <div class="date-panel">
         <label for="tour-date">Your tour Saturday</label>
@@ -78,10 +78,10 @@
 
     <section class="score-section section" id="scorecard">
       <div class="shell">
-        <div class="section-heading light"><div><p class="eyebrow">Tour day tool</p><h2>Your tasting scorecard.</h2></div><p>Rate each stop from 1 to 10. Notes, scores, and your chosen date save automatically in this browser, even after a refresh.</p></div>
-        <div class="score-actions"><p id="save-state">Saved locally ✓</p><button class="text-button" id="reset-scores" type="button">Reset scorecard</button></div>
+        <div class="section-heading light"><div><p class="eyebrow">Tour day tool</p><h2>Your tasting scorecard.</h2></div><p>Rate crunch, pull, seasoning, sauce, and your overall score from 1 to 10. Everything saves automatically in this browser, even after you close the tab.</p></div>
+        <div class="rater-panel"><label for="rater-name">Your name</label><input id="rater-name" maxlength="32" placeholder="Enter your name"><p id="sync-state">Saved locally · ready to sync</p></div><div class="score-actions"><p id="save-state">Saved on this device ✓</p><div><button class="text-button" id="share-scores" type="button">Share results</button><button class="text-button" id="copy-summary" type="button">Copy summary</button><button class="text-button" id="reset-scores" type="button">Reset</button></div></div>
         <div id="scorecards" class="scorecards"></div>
-        <div class="leaderboard" id="leaderboard"><p class="eyebrow">Current leader</p><h3>Start scoring to crown a curd.</h3></div>
+        <div class="leaderboard" id="leaderboard"><p class="eyebrow">Live leaderboard</p><h3>Start scoring to crown a curd.</h3><ol id="ranking"></ol></div><div class="leaderboard group-board"><p class="eyebrow">Group leaderboard</p><h3 id="group-heading">Loading group results...</h3><p id="group-count"></p><ol id="group-ranking"></ol></div><div class="tour-summary" id="tour-summary"><p class="eyebrow">Tour-wide summary</p><h3>No stops scored yet.</h3><p>Rate at least one quality to begin.</p></div>
       </div>
     </section>
 
@@ -107,6 +107,6 @@
   <footer><div class="shell footer-grid"><div><p class="brand"><span>MC</span> Curd Tour</p><p>Made for a gloriously cheesy Milwaukee Saturday.</p></div><div><h3>Verify before you go</h3><p>Menus, hours, and specials can change. Check each venue's linked site on tour day.</p></div><div><h3>Sources</h3><p><a href="https://milwaukeepublicmarket.org/vendors/west-allis-cheese-sausage-shoppe">Public Market</a> · <a href="https://mke.caminomke.com/milwaukee-walkers-point-camino-food-menu">Camino</a> · <a href="https://www.blacksheepmke.com/weekend-brunch/">Black Sheep</a> · <a href="https://whosonthirdmke.com/menu">Who's on Third</a> · <a href="https://www.milwaukeebrathouse.com/milwaukee-brat-house-downtown">Brat House</a> · <a href="https://lakefrontbrewery.com/beer-hall/curd-of-the-month">Lakefront</a></p></div></div></footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
