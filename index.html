@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhD3Zg/AnUSQF8Gr2ThBBqyYUs=" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <header class="hero" id="top">
@@ -50,24 +50,18 @@
     <section class="route-section section" id="route">
       <div class="shell">
         <div class="section-heading light">
-          <div><p class="eyebrow">The route</p><h2>Three neighborhoods.<br>Two smart hops.</h2></div>
-          <p>This is a city-wide tasting route, not one continuous short walk. Walk within each cluster, then use rideshare, bus, bike, or a determined stride between them.</p>
+          <div><p class="eyebrow">The route</p><h2>Six stops.<br>One walkable route.</h2></div>
+          <p>Start at 2 PM. Follow the route in order and use the prominent walking links if the embedded map does not load.</p>
         </div>
         <div class="route-stats" aria-label="Route summary">
-          <div><strong>6</strong><span>stops</span></div><div><strong>4.2 mi</strong><span>full route on foot</span></div><div><strong>~71 min</strong><span>walking, food stops excluded</span></div>
+          <div><strong>6</strong><span>stops</span></div><div><strong>3.2 mi</strong><span>full route on foot</span></div><div><strong>~75 min</strong><span>walking, food stops excluded</span></div>
         </div>
         <div class="map-wrap">
-          <div id="map" role="application" aria-label="Interactive map of six cheese curd tour stops"></div>
+          <div id="map" role="application" aria-label="Interactive map of six cheese curd tour stops"></div><div class="map-fallback"><strong>Map not loading?</strong><a id="fallback-route" href="https://www.google.com/maps/dir/?api=1&origin=1007+N+Doctor+M.L.K.+Jr+Dr%2C+Milwaukee%2C+WI&destination=216+S+2nd+St%2C+Milwaukee%2C+WI&waypoints=509+W+Wisconsin+Ave%2C+Milwaukee%2C+WI%7C1128+N+9th+St%2C+Milwaukee%2C+WI%7C345+N+Broadway%2C+Milwaukee%2C+WI%7C346+N+Broadway%2C+Milwaukee%2C+WI&travelmode=walking" target="_blank">Open the full route in Google Maps →</a></div>
           <div class="map-key"><span><i class="dot walk"></i>Walk cluster</span><span><i class="line-hop"></i>Longer hop</span></div>
         </div>
-        <div class="cluster-grid">
-          <article><span class="cluster-number">A</span><p class="kicker">Third Ward → Walker's Point</p><h3>Stops 1-3</h3><p>About 0.9 miles of walking total. The perfect opening flight: fresh, fried, then wildly sweet-savory.</p></article>
-          <article class="hop"><span>→</span><p><strong>1.1-mile transfer</strong><br>Walk ~25 min or take a quick ride.</p></article>
-          <article><span class="cluster-number">B</span><p class="kicker">Westown</p><h3>Stops 4-5</h3><p>Just 43 feet apart. These neighboring tavern stops make the easiest back-to-back comparison.</p></article>
-          <article class="hop"><span>→</span><p><strong>1.1-mile transfer</strong><br>Walk ~25 min or ride to the river.</p></article>
-          <article><span class="cluster-number">C</span><p class="kicker">Riverwest</p><h3>Stop 6</h3><p>Finish at Lakefront Brewery on the Milwaukee River with its famous beer-battered curds.</p></article>
-        </div>
-        <a class="button yellow" id="maps-link" target="_blank" rel="noopener">Open the full route in Google Maps ↗</a>
+        <div class="pace-warning"><strong>Important pacing:</strong> The kitchens at Wicked Hop and Black Sheep pause from 3-4 PM. Do not rush: a faster pace can put you at a closed kitchen. Café Benelux serves continuously and is the place to absorb the 3-4 window. The long leg is Pilot Project to Wicked Hop: 1.4 miles, about 32 minutes.</div>
+        <a class="button yellow" id="maps-link" target="_blank" rel="noopener">Start walking: open leg 1 in Google Maps ↗</a>
       </div>
     </section>
 
@@ -78,7 +72,7 @@
 
     <section class="score-section section" id="scorecard">
       <div class="shell">
-        <div class="section-heading light"><div><p class="eyebrow">Tour day tool</p><h2>Your tasting scorecard.</h2></div><p>Rate crunch, pull, seasoning, sauce, and your overall score from 1 to 10. Everything saves automatically in this browser, even after you close the tab.</p></div>
+        <div class="section-heading light"><div><p class="eyebrow">Tour day tool</p><h2>Your tasting scorecard.</h2></div><p>Tap Good, Great, or Elite to score all five qualities at once. Fine-tune only if you want. Every tap saves automatically.</p></div>
         <div class="rater-panel"><label for="rater-name">Your name</label><input id="rater-name" maxlength="32" placeholder="Enter your name"><p id="sync-state">Saved locally · ready to sync</p></div><div class="score-actions"><p id="save-state">Saved on this device ✓</p><div><button class="text-button" id="share-scores" type="button">Share results</button><button class="text-button" id="copy-summary" type="button">Copy summary</button><button class="text-button" id="reset-scores" type="button">Reset</button></div></div>
         <div id="scorecards" class="scorecards"></div>
         <div class="leaderboard" id="leaderboard"><p class="eyebrow">Live leaderboard</p><h3>Start scoring to crown a curd.</h3><ol id="ranking"></ol></div><div class="leaderboard group-board"><p class="eyebrow">Group leaderboard</p><h3 id="group-heading">Loading group results...</h3><p id="group-count"></p><ol id="group-ranking"></ol></div><div class="tour-summary" id="tour-summary"><p class="eyebrow">Tour-wide summary</p><h3>No stops scored yet.</h3><p>Rate at least one quality to begin.</p></div>
@@ -99,14 +93,14 @@
         <details open><summary>Why do fresh curds squeak?</summary><p>Young curds have a springy protein network. It rubs against your teeth as you bite, making the famous squeak. As the curd ages and absorbs moisture, that structure softens and the squeak fades.</p></details>
         <details><summary>Curd vs. cheese: what's the difference?</summary><p>Curds are the fresh solids formed when milk is cultured and coagulated. Press, salt, and age those curds and they become the cheese wheels and blocks you know.</p></details>
         <details><summary>What makes a useful score?</summary><p>Judge the shell and the cheese separately. Crunch tracks the coating; pull tracks the warm cheese stretch. Seasoning and sauce should support the curd, not hide it.</p></details>
-        <details><summary>How should we pace six stops?</summary><p>Share one order at each stop, hydrate, and leave room for the finale. The two longer transfers after stops 3 and 5 are natural reset points.</p></details>
+        <details><summary>How should we pace six stops?</summary><p>Share one order at each stop, hydrate, and leave room for the finale. The 1.4-mile walk after Pilot Project is the reset. Keep the route in order so Café Benelux absorbs the 3-4 PM kitchen pause.</p></details>
       </div>
     </section>
   </main>
 
-  <footer><div class="shell footer-grid"><div><p class="brand"><span>MC</span> Curd Tour</p><p>Made for a gloriously cheesy Milwaukee Saturday.</p></div><div><h3>Verify before you go</h3><p>Menus, hours, and specials can change. Check each venue's linked site on tour day.</p></div><div><h3>Sources</h3><p><a href="https://milwaukeepublicmarket.org/vendors/west-allis-cheese-sausage-shoppe">Public Market</a> · <a href="https://mke.caminomke.com/milwaukee-walkers-point-camino-food-menu">Camino</a> · <a href="https://www.blacksheepmke.com/weekend-brunch/">Black Sheep</a> · <a href="https://whosonthirdmke.com/menu">Who's on Third</a> · <a href="https://www.milwaukeebrathouse.com/milwaukee-brat-house-downtown">Brat House</a> · <a href="https://lakefrontbrewery.com/beer-hall/curd-of-the-month">Lakefront</a></p></div></div></footer>
+  <footer><div class="shell footer-grid"><div><p class="brand"><span>MC</span> Curd Tour</p><p>Made for a gloriously cheesy Milwaukee Saturday.</p></div><div><h3>Verify before you go</h3><p>Menus and hours can change. Current details were checked for Saturday service.</p></div><div><h3>Sources</h3><p><a href="https://whosonthirdmke.com/menu">Who's</a> · <a href="https://milwaukee.millertimepubandgrill.com/menu">Miller Time</a> · <a href="https://www.pilotprojectbrewing.com/milwaukeefood">Pilot Project</a> · <a href="https://www.thewickedhop.com/">Wicked Hop</a> · <a href="https://cafebenelux.com/menus">Benelux</a> · <a href="https://www.blacksheepmke.com/weekend-brunch/">Black Sheep</a></p></div></div></footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
