@@ -55,11 +55,18 @@ function initMap(){
     L.marker([s.lat,s.lng],{icon}).addTo(map).bindPopup(`<h3>${s.name}</h3><p>${s.style}</p>`);
     bounds.push([s.lat,s.lng]);
   });
-  L.polyline(bounds,{color:'#df5b2a',weight:4,opacity:.85}).addTo(map);
   mapEl.addEventListener('mouseenter',()=>map.scrollWheelZoom.enable());
   mapEl.addEventListener('mouseleave',()=>map.scrollWheelZoom.disable());
+  const legsReady=fetch('routes.json').then(r=>r.json()).catch(()=>null);
   const fontsReady=document.fonts?document.fonts.ready:Promise.resolve();
-  fontsReady.then(()=>map.fitBounds(bounds,{padding:[30,30]}));
+  Promise.all([legsReady,fontsReady]).then(([legs])=>{
+    if(legs&&legs.length===stops.length-1){
+      legs.forEach(leg=>{L.polyline(leg.coords,{color:'#df5b2a',weight:4,opacity:.85}).addTo(map);leg.coords.forEach(c=>bounds.push(c))});
+    }else{
+      L.polyline(bounds,{color:'#df5b2a',weight:4,opacity:.85}).addTo(map);
+    }
+    map.fitBounds(bounds,{padding:[30,30]});
+  });
 }
 initMap();
 
